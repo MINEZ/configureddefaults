@@ -1,6 +1,7 @@
 package fuzs.configureddefaults;
 
-import fuzs.configureddefaults.handler.DefaultFilesHandler;
+import fuzs.configureddefaults.handler.CopyDefaultsHandler;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.ILifecycleEvent;
 import net.minecraftforge.forgespi.language.IModLanguageProvider;
 import net.minecraftforge.forgespi.language.ModFileScanData;
@@ -14,7 +15,7 @@ public class ConfiguredDefaultsForge implements IModLanguageProvider {
     };
 
     public ConfiguredDefaultsForge() {
-        DefaultFilesHandler.initialize();
+        CopyDefaultsHandler.initialize(FMLPaths.GAMEDIR.get());
     }
 
     @SuppressWarnings("unchecked")
