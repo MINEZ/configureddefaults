@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class CopyDefaultsHandler {
-    public static final String DEFAULTS_DIRECTORY = ConfiguredDefaults.MOD_ID;
+    public static final String DEFAULTS_DIRECTORY = "config/" + ConfiguredDefaults.MOD_ID;
     public static final String README_FILE = "README.md";
     private static final String README_CONTENTS = """
                                                   # %1$s
@@ -53,7 +53,7 @@ public class CopyDefaultsHandler {
 
     private static void setupIfNecessary(Path path) throws IOException {
         Path defaultPresetsPath = path.resolve(DEFAULTS_DIRECTORY);
-        Path gameParentPath = path.getParent();
+        Path gameParentPath = path.getParent().getParent();
         if (Files.notExists(defaultPresetsPath)) {
             if (!defaultPresetsPath.toFile().mkdir()) {
                 ConfiguredDefaults.LOGGER.info("Failed to create fresh '{}' directory",
@@ -74,7 +74,7 @@ public class CopyDefaultsHandler {
 
     private static void copyFiles(Path path, boolean mergeOptions) throws IOException {
         Path defaultPresetsPath = path.resolve(DEFAULTS_DIRECTORY);
-        Path gameParentPath = path.getParent();
+        Path gameParentPath = path.getParent().getParent();
         Set<Path> exclusionPaths = getExclusionPaths(defaultPresetsPath, mergeOptions);
         Files.walk(defaultPresetsPath).forEach((Path sourcePath) -> {
             if (!exclusionPaths.contains(sourcePath)) {
