@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class CopyDefaultsHandler {
@@ -80,11 +81,10 @@ public class CopyDefaultsHandler {
             if (!exclusionPaths.contains(sourcePath)) {
                 try {
                     Path targetPath = relativizeAndNormalize(path, defaultPresetsPath.relativize(sourcePath));
-                    // check if file already exists, otherwise copy will throw an exception
-                    if (sourcePath.toFile().exists() && !targetPath.toFile().exists()) {
+                    if (sourcePath.toFile().exists()) {
                         try {
                             // we do not need to handle creating parent directories as the file tree is traversed depth-first
-                            Files.copy(sourcePath, targetPath);
+                            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
                             ConfiguredDefaults.LOGGER.info("Copied '{}' to '{}'",
                                     relativizeAndNormalize(gameParentPath, sourcePath),
                                     relativizeAndNormalize(gameParentPath, targetPath));
